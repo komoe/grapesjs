@@ -1,9 +1,7 @@
 const path = require('path');
 const rootDir = path.resolve(__dirname);
-
 module.exports = ({ config, pkg, webpack }) => {
   const { BUILD_MODULE } = process.env;
-
   return {
     ...config,
     output: {
@@ -24,9 +22,26 @@ module.exports = ({ config, pkg, webpack }) => {
     },
     devServer: {
       ...config.devServer,
-      static: [rootDir],
+      static: [
+        rootDir,
+        {
+          directory: path.join(rootDir, '../icomponents/dist'),
+          publicPath: '/icomponents/dist',
+        },
+      ],
       headers: { 'Access-Control-Allow-Origin': '*' },
       allowedHosts: 'all',
+
+      proxy: [
+        {
+          context: '/api',
+          target: 'https://arisu.cn',
+          changeOrigin: true,
+          pathRewrite: {
+            '^/api': '/service/apijs',
+          },
+        },
+      ],
     },
     experiments: {
       outputModule: !!BUILD_MODULE,
