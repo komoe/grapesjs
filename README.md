@@ -42,4 +42,10 @@
     pnpm start
 
 
+    # api文档
+    d:
+    cd D:\workspaces\vscode\grapesjs\docs
+    npm run docs
+    pnpm --filter @grapesjs/docs docs
+
 
